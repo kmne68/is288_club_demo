@@ -1,4 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
  <html>
@@ -15,6 +17,15 @@
             }
         </style>
     </head>
+    
+    <!-- send them back if they aren't authenticated -->
+    <c:if test="${!m.authenticated}">
+        <script type="text/javascript">
+            window.location = "/ClubDB";
+        </script>
+    </c:if>
+    <c:if test="${m.authenticated}">
+    
     <body>
         <h1>Club member Data</h1>
         <form id="memupdate" action="MemberUpdate" method="post">
@@ -80,4 +91,5 @@
          ${msg}<br>
          <a href="/ClubDB">Back to the Login Screen</a>
        </body>
+       </c:if>
 </html>

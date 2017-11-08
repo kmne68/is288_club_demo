@@ -37,8 +37,12 @@ public class MemberUpdateServlet extends HttpServlet {
 
         try {
             m = (Member) request.getSession().getAttribute("m");
-            n = m;
-
+            n.setMemid(m.getMemid());   // n is set on session, and m cannot operate on same memory location
+            n.setMemdt(m.getMemdt());
+            n.setStatus(m.getStatus());
+            
+            
+            // allow changes to last, first and middle name
             // obtain form elements for all updatable fields...
             // get last name
             try {
@@ -78,7 +82,7 @@ public class MemberUpdateServlet extends HttpServlet {
             }
             
             // get status
-            try {
+     /*       try {
                 fdata = request.getParameter("status");
                 if(!fdata.isEmpty()) {
                     n.setStatus(fdata);
@@ -88,14 +92,14 @@ public class MemberUpdateServlet extends HttpServlet {
             } catch (Exception e) {
                 msg += "Status exception<br>";
             }
-            
+    */        
             // get member date
             try {
                 fdata = request.getParameter("memdt");
                 if(!fdata.isEmpty()) {
                     n.setStatus(fdata);
                 } else {
-                    msg += "Member join daete is missing.<br>";
+                    msg += "Member join date is missing.<br>";
                 }
             } catch (Exception e) {
                 msg += "Join date exception.<br>";
@@ -103,28 +107,33 @@ public class MemberUpdateServlet extends HttpServlet {
             
             // get password
             try {
-                fdata = request.getParameter("psswd");
-                if(!fdata.isEmpty()) {
-                    n.setStatus(fdata);
-                } else {
-                    msg += "No password entered.<br>";
-                }
-            } catch (Exception e) {
-                msg += "No password exception.<br>";
+               newpwd = Long.parseLong(request.getParameter("psswd"));
+               if(newpwd > 0) {
+                   n.setPassword(newpwd);
+               } else {
+                   msg += "Password illegal<br>";
+               }                
+            } catch (NumberFormatException e) {
+                msg += "Missing/bad password<br>";
             }
            
-
+            if(msg.isEmpty()) {
+                n.setLastnm(m.getLastnm());
+                n.setFirstnm(m.getFirstnm());
+            }
             // continue for other fields
+            
+            
             if (msg.isEmpty()) {
                 // update database...
                 Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPwd);
 
-                sql = "UPDATE tblMembers SET "
-                        + " LastName = ? "
-                        + " FirstName = ? "
-                        + " MiddleName = ? "
-                        + " Status = ? "
-                        + " MemDt = ? "
+                sql = "UPDATE tblmembers SET "
+                        + " LastName = ?, "
+                        + " FirstName = ?, "
+                        + " MiddleName = ?, "
+                        + " Status = ?, "
+                        + " MemDt = ?, "
                         + " Password = ? "
                         + " WHERE MemID = ? ";
 
@@ -142,7 +151,8 @@ public class MemberUpdateServlet extends HttpServlet {
                     msg += "Update failed: no records changed.<br>";
                 } else if (rc == 1) {
                     msg += "Member updated!<br>";
-
+                    m = n;
+                    request.getSession().setAttribute("m", m);
                 } else {
                     msg += "Unexpected update of " + rc + "records.<br>";
                 }
