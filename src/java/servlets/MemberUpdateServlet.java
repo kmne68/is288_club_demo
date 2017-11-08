@@ -33,13 +33,39 @@ public class MemberUpdateServlet extends HttpServlet {
 
         String dbURL = "jdbc:mysql://localhost:3306/club";
         String dbUser = "root";
-        String dbPwd = "@tbftgoGg1sbmLam!0i";
+        String dbPwd = "";
 
         try {
             m = (Member) request.getSession().getAttribute("m");
             n = m;
 
             // obtain form elements for all updatable fields...
+            // get last name
+            try {
+                fdata = request.getParameter("lastname");
+                if (!fdata.isEmpty()) {
+                    n.setLastnm(fdata);
+                } else {
+                    msg += "Last name is empty.<br>";
+                }
+            } catch (Exception e) {
+                msg += "Last name exception<br>";
+            }
+            
+            // get first name
+            try {
+                fdata = request.getParameter("firstname");
+                if (!fdata.isEmpty()) {
+                    n.setFirstnm(fdata);
+                } else {
+                    msg += "First name is empty<br>";
+                }
+            } catch (Exception e) {
+                msg += "First name exception<br>";
+            }
+            
+            
+            // get middle name
             try {
                 fdata = request.getParameter("middlename");
                 if (!fdata.isEmpty()) {
@@ -50,6 +76,43 @@ public class MemberUpdateServlet extends HttpServlet {
             } catch (Exception e) {
                 msg += "Middle name exception<br>";
             }
+            
+            // get status
+            try {
+                fdata = request.getParameter("status");
+                if(!fdata.isEmpty()) {
+                    n.setStatus(fdata);
+                } else {
+                    msg += "Member status is missing.<br>";
+                }
+            } catch (Exception e) {
+                msg += "Status exception<br>";
+            }
+            
+            // get member date
+            try {
+                fdata = request.getParameter("memdt");
+                if(!fdata.isEmpty()) {
+                    n.setStatus(fdata);
+                } else {
+                    msg += "Member join daete is missing.<br>";
+                }
+            } catch (Exception e) {
+                msg += "Join date exception.<br>";
+            }
+            
+            // get password
+            try {
+                fdata = request.getParameter("psswd");
+                if(!fdata.isEmpty()) {
+                    n.setStatus(fdata);
+                } else {
+                    msg += "No password entered.<br>";
+                }
+            } catch (Exception e) {
+                msg += "No password exception.<br>";
+            }
+           
 
             // continue for other fields
             if (msg.isEmpty()) {
@@ -57,13 +120,23 @@ public class MemberUpdateServlet extends HttpServlet {
                 Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPwd);
 
                 sql = "UPDATE tblMembers SET "
+                        + " LastName = ? "
+                        + " FirstName = ? "
                         + " MiddleName = ? "
+                        + " Status = ? "
+                        + " MemDt = ? "
+                        + " Password = ? "
                         + " WHERE MemID = ? ";
 
                 PreparedStatement ps = conn.prepareStatement(sql);
                 // statements start from 1 (counting number of question marks in the query
-                ps.setString(1, n.getMiddlenm());
-                ps.setString(2, n.getMemid());
+                ps.setString(1, n.getLastnm());
+                ps.setString(2, n.getFirstnm());
+                ps.setString(3, n.getMiddlenm());
+                ps.setString(4, n.getStatus());
+                ps.setString(5, n.getMemdt());
+                ps.setLong(6, n.getPassword());
+                ps.setString(7, n.getMemid());
                 int rc = ps.executeUpdate();
                 if (rc == 0) {
                     msg += "Update failed: no records changed.<br>";
