@@ -40,6 +40,7 @@ public class MemberUpdateServlet extends HttpServlet {
             n.setMemid(m.getMemid());   // n is set on session, and m cannot operate on same memory location
             n.setMemdt(m.getMemdt());
             n.setStatus(m.getStatus());
+            n.setPassattempt(m.getPassattempt());
             
             
             // allow changes to last, first and middle name

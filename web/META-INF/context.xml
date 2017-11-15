@@ -4,7 +4,7 @@
               auth="Container"
               driverClassName="com.mysql.jdbc.Driver"
               url="jdbc:mysql://localhost:3306/club"
-              user="root"
+              username="root"
               password=""
               maxActive="100"
               maxIdle="30"
