@@ -61,13 +61,13 @@ public class ShowPurchasesServlet extends HttpServlet {
             if (!sqlwhere.isEmpty()) {
                 sql += " AND p.purchasedt >= '" + sqlwhere + "' ";
             }
-            //          if (!sqlwhere.isEmpty()) {
-            //            sql += " AND ? >= '" + sqlwhere + "' ";
-            //      }
+            if (!sqlwhere.isEmpty()) {
+                sql += " AND ? >= '" + sqlwhere + "' ";
+            }
             sql += " ORDER BY p.purchasedt";
-            //        sql += " ORDER BY ?";
+            sql += " ORDER BY ?";
 
-            PreparedStatement ps = conn.prepareStatement(sql);
+            /*          PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, "tblpurchases.MemID");
             ps.setString(2, "tblpurchases.PurchaseDt");
             ps.setString(3, "tblpurchases.TransType");
@@ -83,9 +83,9 @@ public class ShowPurchasesServlet extends HttpServlet {
             //         ps.setString(13, "tblpurchases.purchasedt");
 
             int rc = ps.executeUpdate();
-
+             */
             // best to replace with prepared statement EC opportunity
-            /*           Statement s = conn.createStatement();
+            Statement s = conn.createStatement();
             sql = "SELECT p.MemID, p.PurchaseDt, p.TransType, " + "p.transCd, c.TransDesc, p.Amount "
                     + " FROM tblpurchases p, tblcodes c " + " WHERE p.transcd = c.transcd "
                     + "  AND p.memid = '" + m.getMemid() + "' ";
@@ -93,8 +93,9 @@ public class ShowPurchasesServlet extends HttpServlet {
                 sql += " AND p.purchasedt >= '" + sqlwhere + "' ";
             }
             sql += " ORDER BY p.purchasedt";
-             */
-            ResultSet r = ps.executeQuery(sql); // was s.executeQuery(sql
+
+            // ResultSet r = ps.executeQuery(sql);
+            ResultSet r = s.executeQuery(sql);
 
             ArrayList<Purchase> pur = new ArrayList<>();
 

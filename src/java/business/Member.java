@@ -16,6 +16,7 @@ public class Member {
         this.lastnm = "";
         this.firstnm = "";
         this.middlenm = "";
+        this.status = "";
         this.memdt = "";
         this.password = -1;
         this.passattempt = 0;

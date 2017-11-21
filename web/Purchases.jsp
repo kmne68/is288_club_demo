@@ -38,7 +38,7 @@
         <br>
         <p>${msg}</p>
         <br>
-        <a href=""MemberScreen.jsp">BAck to MEmber Screen</a>
+        <a href=""MemberScreen.jsp">Back to Member Screen</a>
         
     </body>
 </html>

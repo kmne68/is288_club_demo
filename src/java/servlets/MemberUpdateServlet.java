@@ -33,7 +33,7 @@ public class MemberUpdateServlet extends HttpServlet {
 
         String dbURL = "jdbc:mysql://localhost:3306/club";
         String dbUser = "root";
-        String dbPwd = "";
+        String dbPwd = "sesame";
 
         try {
             m = (Member) request.getSession().getAttribute("m");
@@ -129,14 +129,14 @@ public class MemberUpdateServlet extends HttpServlet {
                 // update database...
                 Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPwd);
 
-                sql = "UPDATE tblmembers SET "
-                        + " LastName = ?, "
-                        + " FirstName = ?, "
-                        + " MiddleName = ?, "
-                        + " Status = ?, "
-                        + " MemDt = ?, "
-                        + " Password = ? "
-                        + " WHERE MemID = ? ";
+                sql = "UPDATE tblmembers SET " +
+                        " LastName = ?, " +
+                        " FirstName = ?, " +
+                        " MiddleName = ?, " +
+                        " Status = ?, " +
+                        " MemDt = ?, " +
+                        " Password = ? " +
+                        " WHERE MemID = ? ";
 
                 PreparedStatement ps = conn.prepareStatement(sql);
                 // statements start from 1 (counting number of question marks in the query

@@ -40,7 +40,7 @@ public class ClubLogonServlet extends HttpServlet {
         
         String dbURL = "jdbc:mysql://localhost:3306/club";
         String dbUser = "root";
-        String dbPwd = "";
+        String dbPwd = "sesame";
         
         try {
             userid = request.getParameter("userid").trim();
